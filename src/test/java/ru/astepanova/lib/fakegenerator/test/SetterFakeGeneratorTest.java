@@ -13,17 +13,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ru.astepanova.lib.fakegenerator.FakeHelper;
-import ru.astepanova.lib.fakegenerator.test.SomeBuilderClass.SomeEnum;
-import ru.astepanova.lib.fakegenerator.util.BuilderFakeGenerator;
+import ru.astepanova.lib.fakegenerator.test.SomeSetterClass.SomeEnum;
+import ru.astepanova.lib.fakegenerator.util.SetterFakeGenerator;
 
-class BuilderFakeGeneratorTest {
+class SetterFakeGeneratorTest {
 
-    BuilderFakeGenerator generator = new BuilderFakeGenerator();
+    SetterFakeGenerator generator = new SetterFakeGenerator();
 
     @Test
     @DisplayName("Без скипов и предзаполнения")
     void createFaked1Test() {
-        SomeBuilderClass faked = generator.createFaked(SomeBuilderClass.class);
+        SomeSetterClass faked = generator.createFaked(SomeSetterClass.class);
         assertNotNull(faked);
         assertNotNull(faked.getByteField());
         assertNotNull(faked.getShortField());
@@ -56,9 +56,9 @@ class BuilderFakeGeneratorTest {
         String str = "str";
         SomeEnum e = SomeEnum.CONST1;
         LocalDate now = LocalDate.now();
-        SomeBuilderClass faked = generator.createFaked(SomeBuilderClass.class, FakeHelper.builder()
-                .fieldValues(List.of(byteField, str, e, now))
-                .build());
+        SomeSetterClass faked = generator.createFaked(SomeSetterClass.class, FakeHelper.builder()
+            .fieldValues(List.of(byteField, str, e, now))
+            .build());
         assertEquals(byteField, faked.getByteField());
         assertEquals(str, faked.getStrField());
         assertEquals(str, faked.getStr2Field());
@@ -73,13 +73,14 @@ class BuilderFakeGeneratorTest {
         String str = "str";
         SomeEnum e = SomeEnum.CONST1;
         LocalDate now = LocalDate.now();
-        SomeBuilderClass faked = generator.createFaked(SomeBuilderClass.class, FakeHelper.builder()
-                .fieldValueMap(Map.of(
-                        "byteField", byteField,
-                        "strField", str,
-                        "enumField", e,
-                        "lDateField", now))
-                .build());
+        SomeSetterClass faked = generator.createFaked(SomeSetterClass.class, FakeHelper.builder()
+            .fieldValueMap(Map.of(
+                "byteField", byteField,
+                "strField", str,
+                "enumField", e,
+                "lDateField", now
+            ))
+            .build());
         assertEquals(byteField, faked.getByteField());
         assertEquals(str, faked.getStrField());
         assertNotEquals(str, faked.getStr2Field());
@@ -90,21 +91,21 @@ class BuilderFakeGeneratorTest {
     @Test
     @DisplayName("Со скипами типов без предзаполнения")
     void createFaked4Test() {
-        SomeBuilderClass faked = generator.createFaked(SomeBuilderClass.class, FakeHelper.builder()
-                .skipTypes(List.of(String.class))
-                .build());
+        SomeSetterClass faked = generator.createFaked(SomeSetterClass.class, FakeHelper.builder()
+        .skipTypes(List.of(String.class))
+        .build());
 
         assertNotNull(faked);
         assertNull(faked.getStrField());
         assertNull(faked.getStr2Field());
     }
-
+    
     @Test
     @DisplayName("Со скипами по именам полей без предзаполнения")
     void createFaked5Test() {
-        SomeBuilderClass faked = generator.createFaked(SomeBuilderClass.class, FakeHelper.builder()
-                .skipFields(List.of("strField"))
-                .build());
+        SomeSetterClass faked = generator.createFaked(SomeSetterClass.class, FakeHelper.builder()
+        .skipFields(List.of("strField"))
+        .build());
 
         assertNotNull(faked);
         assertNull(faked.getStrField());
@@ -115,6 +116,6 @@ class BuilderFakeGeneratorTest {
     @DisplayName("Неверный генератор")
     void createFaked6Test() {
         assertThrows(IllegalArgumentException.class,
-                () -> generator.createFaked(SomeSetterClass.class));
+                () -> generator.createFaked(SomeBuilderClass.class));
     }
 }
