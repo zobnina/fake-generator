@@ -19,11 +19,6 @@ import ru.astepanova.lib.fakegenerator.FakeHelper;
 public class SetterFakeGenerator extends FakeGenerator {
 
     @Override
-    public <T> T createFaked(@NonNull Class<T> clazz) {
-        return createFaked(clazz, FakeHelper.builder().build());
-    }
-
-    @Override
     public <T> T createFaked(@NonNull Class<T> clazz, @NonNull FakeHelper fakeHelper) {
         try {
             Constructor<T> constructor = clazz.getConstructor();

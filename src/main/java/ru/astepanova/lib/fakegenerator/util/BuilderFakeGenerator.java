@@ -17,11 +17,6 @@ import ru.astepanova.lib.fakegenerator.FakeHelper;
 public final class BuilderFakeGenerator extends FakeGenerator {
 
     @Override
-    public <T> T createFaked(Class<T> clazz) {
-        return createFaked(clazz, FakeHelper.builder().build());
-    }
-
-    @Override
     public <T> T createFaked(Class<T> clazz, FakeHelper fakeHelper) {
         try {
             Method builderMethod = clazz.getDeclaredMethod("builder");

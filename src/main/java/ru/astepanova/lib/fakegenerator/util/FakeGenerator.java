@@ -11,27 +11,31 @@ public abstract class FakeGenerator {
 
     protected static final Logger LOGGER = Logger.getLogger(FakeGenerator.class.getName());
 
-    abstract <T> T createFaked(@NonNull final Class<T> clazz);
-
     abstract <T> T createFaked(@NonNull final Class<T> clazz, @NonNull final FakeHelper fakeHelper);
+
+    public <T> T createFaked(@NonNull final Class<T> clazz) {
+        return createFaked(clazz, FakeHelper.builder().build());
+    }
 
     protected Object parameterValue(Method fieldMethod, Field field, FakeHelper fakeHelper) {
         Class<?>[] parameterTypes = fieldMethod.getParameterTypes();
         assert parameterTypes.length == 1;
 
-        Class<?> parameterClass = parameterTypes[0];
+        return parameterValue(field, fakeHelper);
+    }
+
+    protected Object parameterValue(Field field, FakeHelper fakeHelper) {
         Object parameterValue = null;
         if (!skip(field, fakeHelper)) {
             if (fakeHelper.getFieldValueMap().containsKey(field.getName())) {
                 parameterValue = fakeHelper.getFieldValueMap().get(field.getName());
             } else {
                 parameterValue = fakeHelper.getFieldValues().stream()
-                        .filter(v -> v.getClass().equals(parameterClass))
+                        .filter(v -> v.getClass().equals(field.getType()))
                         .findFirst()
-                        .orElseGet(() -> RandomGeneratorUtil.randomValue(parameterClass));
+                        .orElseGet(() -> RandomGeneratorUtil.randomValue(field.getType()));
             }
         }
-
         return parameterValue;
     }
 

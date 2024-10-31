@@ -1,6 +1,8 @@
 package ru.astepanova.lib.fakegenerator.util;
 
 import com.github.javafaker.Faker;
+
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -26,6 +28,7 @@ import static java.util.Objects.nonNull;
 public class RandomGeneratorUtil {
 
     private static final Logger LOGGER = Logger.getLogger(RandomGeneratorUtil.class.getName());
+    @Getter
     private static final Faker FAKER = new Faker();
 
     public <V> V randomValue(Class<V> type) {
